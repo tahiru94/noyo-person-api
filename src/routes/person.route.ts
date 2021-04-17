@@ -20,6 +20,8 @@ class Routes {
         app.route('/v1/person/:id')
             .get(this.personController.getPersonById)
             .put(this.personController.updateAndVersionPerson);
+        app.route('/v1/person/:id/version/:version')
+            .get(this.personController.getPersonByIdAndVersion);
     }
 }
 

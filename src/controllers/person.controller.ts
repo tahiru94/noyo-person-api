@@ -1,6 +1,11 @@
 import { model } from 'mongoose';
 import { Request, Response } from 'express';
-import { groupBy, values, flattenDeep, compact } from 'lodash';
+import {
+    groupBy,
+    values,
+    flattenDeep,
+    compact
+} from 'lodash';
 
 import PersonSchema from '../models/person.model';
 
@@ -50,6 +55,23 @@ class PersonController {
 
                 res.json(latest);
             }
+        });
+    }
+
+    /**
+     * GET /v1/person/:id/version/:version
+     * @param req request object (id and version for person)
+     * @param res response object
+     */
+    public getPersonByIdAndVersion(req: Request, res: Response) {
+        const { id, version } = req.params;
+
+        Person.findOne({ id, version }, (err: any, person: typeof Person) => {
+            if (err) {
+                res.send(err);
+            }
+
+            res.json(person);
         });
     }
 
