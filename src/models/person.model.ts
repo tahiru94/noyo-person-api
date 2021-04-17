@@ -2,8 +2,11 @@ import { Schema } from 'mongoose';
 import { v4 } from 'uuid';
 
 const PersonSchema = new Schema({
+    _id: {
+        type: String
+    },
     id: {
-        type: Number,
+        type: String,
         default: v4() // auto-generated ID; different from MongoDB _id
     },
     firstName: {

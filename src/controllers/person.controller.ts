@@ -29,7 +29,8 @@ class PersonController {
     }
 
     public getPersonById(req: Request, res: Response) {
-        Person.find({ id: req.params.id }, (err, person) => {
+        const { id } = req.params; // Must be sent as /id and not ?id=
+        Person.findOne({ id }, (err: any, person: typeof Person) => {
             if (err) {
                 res.send(err);
             }
