@@ -19,7 +19,8 @@ class Routes {
             .post(this.personController.addNewPerson);
         app.route('/v1/person/:id')
             .get(this.personController.getPersonById)
-            .put(this.personController.updateAndVersionPerson);
+            .put(this.personController.updateAndVersionPerson)
+            .delete(this.personController.deletePersonById);
         app.route('/v1/person/:id/version/:version')
             .get(this.personController.getPersonByIdAndVersion);
     }

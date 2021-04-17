@@ -109,6 +109,29 @@ class PersonController {
             });
         });
     }
+
+    public deletePersonById(req: Request, res: Response) {
+        const { id } = req.params;
+
+        Person.find({ id }, (err: any, person: typeof Person) => {
+            if (err) {
+                res.send(err);
+            }
+
+            if (person) {
+                console.log('person is', person);
+                const latest = utils.default.getLatestPerson(person);
+                console.log('latest is', latest);
+
+                Person.deleteOne({ _id: latest._id }).then(_ => {
+                    // noop, just here to confirm delete
+                    // TODO: Investigate why `then` needs to be used
+                });
+
+                res.json({ message: `Deleted Person with id ${id} [version: ${latest.version}]` })
+            }
+        });
+    }
 }
 
 export default PersonController;
