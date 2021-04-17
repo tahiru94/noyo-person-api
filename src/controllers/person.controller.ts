@@ -110,6 +110,11 @@ class PersonController {
         });
     }
 
+    /**
+     * DELETE /v1/person/:id
+     * @param req request object (id for deletion)
+     * @param res response object
+     */
     public deletePersonById(req: Request, res: Response) {
         const { id } = req.params;
 
@@ -119,9 +124,7 @@ class PersonController {
             }
 
             if (person) {
-                console.log('person is', person);
                 const latest = utils.default.getLatestPerson(person);
-                console.log('latest is', latest);
 
                 Person.deleteOne({ _id: latest._id }).then(_ => {
                     // noop, just here to confirm delete
