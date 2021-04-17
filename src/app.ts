@@ -1,6 +1,6 @@
 import express, { Application } from 'express';
 import { json, urlencoded } from 'body-parser';
-import mongoose from 'mongoose';
+import mongoose, { Connection } from 'mongoose';
 
 import Routes from './routes/person.route';
 import * as config from '../config';
@@ -9,6 +9,7 @@ class App {
     public app: Application;
     public apiRoutes: Routes = new Routes();
     public mongoUrl: string = config.default.mongoUrl;
+    public connection!: Promise<any>;
 
     constructor() {
         this.app = express();
@@ -24,10 +25,14 @@ class App {
 
     private mongoSetup(): void {
         mongoose.Promise = global.Promise;
-        mongoose.connect(this.mongoUrl, {
+        this.connection = mongoose.connect(this.mongoUrl, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
+    }
+
+    private async mongoTeardown(): Promise<void> {
+        (await (this.connection as Promise<Connection>)).close();
     }
 }
 
