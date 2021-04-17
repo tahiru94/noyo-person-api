@@ -27,3 +27,19 @@ This project benefits from the following, for testing / API usage purposes:
     * `npm run prod` to generate a production build for this project, and run from the `dist/` directory
 5. When the application is running, you should see the following message in your CLI: `noyo-person-api running at http://localhost:{PORT}`, where `PORT` has been defaulted to `3000`, but can be changed as needed in the file
 6. Refer to the API documentation to learn how to use the different routes
+
+<br>
+
+## API
+
+The following table represents an API for the application:
+| Method | Route | Description | Action | Body | Parameters |
+|--------|-------|-------------|--------|------|------------|
+| `GET` | `/v1/person/all` | Returns all Person objects across all versions | - | None | None |
+| `GET` | `/v1/person` | Returns the latest version of all distinct Person objects | Read All | None | None |
+| `POST` | `/v1/person` | Creates a new Person object | Create | `firstName`, `lastName`, `email`, `age` | None |
+| `GET` | `/v1/person/:id` | Returns the latest version of a Person object by their `id` | Single Read | None | `id` |
+| `PUT` | `/v1/person/:id` | Updates a Person object using their `id` | Update | `firstname`, `lastName`, `email`, `age` (optional based on what needs to be updated) | `id` |
+| `DELETE` | `/v1/person/:id` | Deletes the latest version of a Person object | Delete | None | `id` |
+| `GET` | `/v1/person/:id/version/:version` | Returns a single Person object based on their `id` and a specified `version` | Versioned Single Read | None | `id`, `version` |
+
