@@ -1,13 +1,8 @@
 import { model } from 'mongoose';
 import { Request, Response } from 'express';
-import {
-    groupBy,
-    values,
-    flattenDeep,
-    compact
-} from 'lodash';
 
 import PersonSchema from '../models/person.model';
+import * as utils from '../../utils/utils';
 
 const Person = model('Person', PersonSchema);
 
@@ -23,16 +18,8 @@ class PersonController {
                 res.send(err);
             }
 
-            if (person) {
-                const groupedById = values(groupBy(person, 'id'));
-                const updatedGroupedById = groupedById.map((group) => {
-                    const latest = group.sort((personA: any, personB: any) => {
-                        return personB.version - personA.version;
-                    })[0];
-                    return latest;
-                });
-                res.json(compact(flattenDeep(updatedGroupedById)));
-            }
+            const latestForAll = utils.default.getLatestForAll(person);
+            res.json(latestForAll);
         });
     }
 
@@ -48,13 +35,8 @@ class PersonController {
                 res.send(err);
             }
 
-            if (person) {
-                const latest = (person as any).sort((personA: any, personB: any) => {
-                    return personB.version - personA.version;
-                })[0];
-
-                res.json(latest);
-            }
+            const latest = utils.default.getLatestPerson(person);
+            res.json(latest);
         });
     }
 
@@ -108,9 +90,7 @@ class PersonController {
             }
 
             if (person) {
-                const latest = (person as any).sort((personA: any, personB: any) => {
-                    return personB.version - personA.version;
-                })[0];
+                const latest = utils.default.getLatestPerson(person);
 
                 newPerson = new Person({
                     ...latest,
