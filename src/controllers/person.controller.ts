@@ -1,5 +1,6 @@
 import { model } from 'mongoose';
 import { Request, Response } from 'express';
+import { groupBy, values, flattenDeep, compact } from 'lodash';
 
 import PersonSchema from '../models/person.model';
 
@@ -17,7 +18,16 @@ class PersonController {
                 res.send(err);
             }
 
-            res.json(person);
+            if (person) {
+                const groupedById = values(groupBy(person, 'id'));
+                const updatedGroupedById = groupedById.map((group) => {
+                    const latest = group.sort((personA: any, personB: any) => {
+                        return personB.version - personA.version;
+                    })[0];
+                    return latest;
+                });
+                res.json(compact(flattenDeep(updatedGroupedById)));
+            }
         });
     }
 
