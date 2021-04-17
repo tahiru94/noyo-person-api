@@ -43,3 +43,12 @@ The following table represents an API for the application:
 | `DELETE` | `/v1/person/:id` | Deletes the latest version of a Person object | Delete | None | `id` |
 | `GET` | `/v1/person/:id/version/:version` | Returns a single Person object based on their `id` and a specified `version` | Versioned Single Read | None | `id`, `version` |
 
+<br>
+
+## Todo
+
+* Add more testing / scenarios for testing
+* Address MongoDB usage in tests (setup / teardown)
+* "Prettify" error messages upon unsuccessful `POST`, etc.
+* Refactor code for routes to ensure efficient use of MongoDB connection(s)
+* Generate actual API documentation / Swagger UI
