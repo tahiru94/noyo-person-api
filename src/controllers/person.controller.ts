@@ -7,13 +7,35 @@ import * as utils from '../../utils/utils';
 const Person = model('Person', PersonSchema);
 
 class PersonController {
+
+    /**
+     * GET /v1/person/all
+     * 
+     * Read all (no version limitation)
+     * 
+     * Because you do NOT want to be caught with your perpetuity down
+     */
+    public getAllPeople(req: Request, res: Response) {
+        Person.find({}, (err: any, person: typeof Person) => {
+            if (err) {
+                res.send(err);
+            }
+
+            res.send(person);
+        });
+    }
+
     /**
      * GET /v1/person
+     * 
+     * Read All
+     * Fetch a list of all persons (latest version)
+     * 
      * @param req request object
      * @param res response object
      */
     public getPeople(req: Request, res: Response) {
-        Person.find({}, (err, person) => {
+        Person.find({}, (err: any, person: typeof Person) => {
             if (err) {
                 res.send(err);
             }
@@ -25,8 +47,11 @@ class PersonController {
 
     /**
      * GET /v1/person/:id
-     * @param req request object (id for person)
-     * @param res response object
+     * 
+     * Single Read
+     * Fetch the latest version of a single person using their id
+     * 
+     * @param id id for the person
      */
     public getPersonById(req: Request, res: Response) {
         const { id } = req.params; // Must be sent as /id and not ?id=
@@ -42,8 +67,12 @@ class PersonController {
 
     /**
      * GET /v1/person/:id/version/:version
-     * @param req request object (id and version for person)
-     * @param res response object
+     * 
+     * Versioned Single Read
+     * Fetch a single person using their id and a specified version
+     * 
+     * @param id id for the person
+     * @param version version for the person
      */
     public getPersonByIdAndVersion(req: Request, res: Response) {
         const { id, version } = req.params;
@@ -59,8 +88,11 @@ class PersonController {
 
     /**
      * POST /v1/person
+     * 
+     * Create
+     * Create a new person
+     * 
      * @param req request object (body with person fields)
-     * @param res response object
      */
 
     public addNewPerson(req: Request, res: Response) {
@@ -77,8 +109,12 @@ class PersonController {
 
     /**
      * PUT /v1/person/:id
+     * 
+     * Update
+     * Update a single person using their id
+     * 
+     * @param id id for the person
      * @param req request object (body with updated fields)
-     * @param res response object
      */
     public updateAndVersionPerson(req: Request, res: Response) {
         const { id } = req.params;
@@ -112,8 +148,11 @@ class PersonController {
 
     /**
      * DELETE /v1/person/:id
-     * @param req request object (id for deletion)
-     * @param res response object
+     * 
+     * Delete
+     * Delete a single person using their id
+     * 
+     * @param id id for the person
      */
     public deletePersonById(req: Request, res: Response) {
         const { id } = req.params;
